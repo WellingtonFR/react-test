@@ -17,11 +17,28 @@ describe("Teste do componente de login", () => {
     expect(title).toBeInTheDocument();
   });
 
-  test("Deve conter dois inputs na tela", () => {
+  // test("Deve conter dois inputs na tela", () => {
+  //   render(<Login />);
+
+  //   const inputs = screen.getAllByRole("textbox");
+  //   expect(inputs).toHaveLength(2);
+  // });
+
+  test("Deve conter um input para inserir o e-mail", () => {
     render(<Login />);
 
-    const inputs = screen.getAllByRole("textbox");
-    expect(inputs).toHaveLength(2);
+    const inputEmail = screen.getByPlaceholderText("Insira seu e-mail");
+    expect(inputEmail).toBeInTheDocument();
+  });
+
+  test("Deve conter um input para inserir a senha", () => {
+    render(<Login />);
+
+    const inputPassword = screen.getByPlaceholderText("Insira sua senha");
+    const inputPasswordType = screen.getByRole("textbox", { type: "password" });
+
+    expect(inputPassword).toBeInTheDocument();
+    expect(inputPasswordType).toBeInTheDocument();
   });
 
   test("Deve conter um botao com o texto 'ENTRAR'", () => {

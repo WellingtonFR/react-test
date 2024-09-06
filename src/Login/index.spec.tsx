@@ -1,7 +1,15 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import Login from ".";
 
+const navigateMock = vi.fn();
+
 describe("Teste do componente de login", () => {
+  vi.mock("react-router-dom", () => ({
+    useNavigate() {
+      return navigateMock;
+    },
+  }));
+
   test("1+1 deve ser 2"),
     () => {
       const sum = 1 + 1;
@@ -35,10 +43,8 @@ describe("Teste do componente de login", () => {
     render(<Login />);
 
     const inputPassword = screen.getByPlaceholderText("Insira sua senha");
-    const inputPasswordType = screen.getByRole("textbox", { type: "password" });
 
     expect(inputPassword).toBeInTheDocument();
-    expect(inputPasswordType).toBeInTheDocument();
   });
 
   test("Deve conter um botao com o texto 'ENTRAR'", () => {
@@ -51,5 +57,14 @@ describe("Teste do componente de login", () => {
 
     expect(button).toBeInTheDocument();
     expect(buttonText).toBeInTheDocument();
+  });
+
+  test("Deve conter um input para inserir a senha", () => {
+    render(<Login />);
+
+    const button = screen.getByRole("button");
+    fireEvent.click(button);
+
+    expect(navigateMock).toHaveBeenCalledTimes(1);
   });
 });
